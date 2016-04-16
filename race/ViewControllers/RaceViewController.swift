@@ -47,32 +47,31 @@ class RaceViewController: UIViewController, RaceDataSource {
     }
     
     func updateRaceView() {
-        if raceModel.finished {
+        if raceModel.raceFinished {
             timer.invalidate()
             return
         }
         //TODO If race has all participants finishTime filled - show scoreboard
         if raceModel.participantsFinishCount == Configuration.ParticipantsCount{
-            raceModel.finished = true
+            raceModel.raceFinished = true
             raceModel.printFinish()
-        } else {
-            raceView.setNeedsDisplay()
         }
+        raceView.setNeedsDisplay()
+        
     }
     
     //RaceDataSource
     func distanceFractionForParticipantAtIndex(index:Int) -> Double?{
-        //TODO ask Model
         let participantDistance = raceModel.distanceForParticipantAtIndex(index)
-        
-        //TODO after reaching 1 set participant finishTime: assume that we have "photo finish":
-        //participant finishes the race only when it becomes visible on screen
-        
         return participantDistance / Configuration.RaceDistance
     }
     
-    func speedForParticipantAtIndex(index:Int) -> Double?{
-        //TODO ask Model
-        return 1.0
+    func speedForParticipantAtIndex(index:Int) -> String?{
+        if raceModel.isFinishedAtIndex(index){
+            return "Finished!"
+        }
+        let participantSpeed = raceModel.speedForParticipantAtIndex(index)
+        let speedString = NSNumberFormatter().stringFromNumber(participantSpeed ?? 0.0)!+"m/s"
+        return speedString
     }
 }

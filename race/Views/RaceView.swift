@@ -11,7 +11,7 @@ import UIKit
 
 protocol RaceDataSource: class {
     func distanceFractionForParticipantAtIndex(index:Int) -> Double?
-    func speedForParticipantAtIndex(index:Int) -> Double?
+    func speedForParticipantAtIndex(index:Int) -> String?
 }
 
 @IBDesignable
@@ -32,8 +32,7 @@ class RaceView: UIView {
         for i in 1...participantsCount {
             let participantView = ParticipantView(frame: CGRectMake(0, y, 100, 20))
             y += participantViewHeight
-            let speed = dataSource?.speedForParticipantAtIndex(i-1)
-            participantView.text = NSNumberFormatter().stringFromNumber(speed ?? 0.0)
+            participantView.text = dataSource?.speedForParticipantAtIndex(i-1)
             addSubview(participantView)
         }
         
@@ -43,8 +42,7 @@ class RaceView: UIView {
         var index = 0
         for view in subviews {
             if let participantView = view as? ParticipantView {
-                let speed = dataSource?.speedForParticipantAtIndex(index)
-                participantView.text = NSNumberFormatter().stringFromNumber(speed ?? 0.0)
+                participantView.text = dataSource?.speedForParticipantAtIndex(index)
             }
             let distanceFraction = dataSource?.distanceFractionForParticipantAtIndex(index) ?? 0.0
             var x = frame.size.width * CGFloat(distanceFraction)

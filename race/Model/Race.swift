@@ -13,16 +13,23 @@ class Race {
     private var distance: Double
     private var startTime: NSDate! //init it with start time at race start!
     private var participants: Array<Participant>
-    var participantsFinishCount = 0
-    var finished = true
+    
+    func setFinishedParticipantAtIndex(index: Int) {
+        let participant = participants[index]
+        participant.finishTime = NSDate()
+        participantsFinishCount++
+    }
     
     //***
     //Interface
     //***
+    var participantsFinishCount = 0
+    var raceFinished = true
+    
     func start(){
         startTime = NSDate()
         participantsFinishCount = 0
-        finished = false
+        raceFinished = false
         var index = 1
         for participant in participants{
             participant.start(startTime, yourNumber: index++)
@@ -45,18 +52,21 @@ class Race {
         var participantDistance = participant.distanceForTime(NSDate())
         if participantDistance >= distance {
             if participant.finishTime == nil {
-                finishParticipantAtIndex(index)
+                setFinishedParticipantAtIndex(index)
             }
             participantDistance = distance
         }
-        //TODO think whether time synchronization should be in controller...
         return participantDistance
     }
     
-    func finishParticipantAtIndex(index: Int) {
+    func speedForParticipantAtIndex(index:Int) -> Double?{
         let participant = participants[index]
-        participant.finishTime = NSDate()
-        participantsFinishCount++
+        return participant.lastKnownSpeed()
+    }
+    
+    func isFinishedAtIndex(index:Int) -> Bool{
+        let participant = participants[index]
+        return participant.finishTime != nil
     }
     
     func printFinish() {

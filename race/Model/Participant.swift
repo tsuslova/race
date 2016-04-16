@@ -12,6 +12,11 @@ class Participant: NSObject{
     
     private struct Constants{
         static let BoostFrequency = 50.0 //times per second
+        
+        //Gameplay
+        static let InitialSpeed = 10.0
+        static let MaxSpeed = 100.0
+        static let MinSpeed = 10.0
     }
     
     private func updateInterval() -> NSTimeInterval{
@@ -19,7 +24,6 @@ class Participant: NSObject{
     }
     
     func getWith<T>(lock: AnyObject, closure: () -> T) -> T {
-        //TODO non-blocking read? mutex?
         var value: T
         objc_sync_enter(lock)
         value = closure()
@@ -36,7 +40,7 @@ class Participant: NSObject{
     //Total distance till previous speed change (may be it's better to store all the speed changes
     //and calculate on-fly...)
     //meters per second
-    private var _lastBoostSpeed = 0.0
+    private var _lastBoostSpeed = Constants.InitialSpeed
     private var lastBoostSpeed: Double {
         get {
             return getWith(_lastBoostSpeed, closure: {return self._lastBoostSpeed})
@@ -99,17 +103,26 @@ class Participant: NSObject{
             print("Debug log: not in race yet...");
             return 0.0
         }
-        //If we already finished time used for calculation is:
-        //let timeForCalculation = finishTime ?? time
         
         let currentTime = NSDate()
         let lastBoostInterval = currentTime.timeIntervalSinceDate(lastBoostTime!)
-        //TODO: take lastBoostDistance and add timediff to find exact distance
         return distanceTillLastBoost+lastBoostInterval*lastBoostSpeed
     }
     
     func lastKnownSpeed() -> Double{
         return lastBoostSpeed
+    }
+    
+    func generateSpeed() -> Double!{
+        let speedMultiplier = drand48() + 0.55
+        
+        var newSpeed = lastBoostSpeed*(speedMultiplier)
+        if newSpeed > Constants.MaxSpeed {//Driver got afraid...
+            newSpeed = Constants.MaxSpeed - 10
+        } else if newSpeed < Constants.MinSpeed {
+            newSpeed = Constants.MinSpeed
+        }
+        return newSpeed
     }
     
     func boost(){
@@ -123,7 +136,7 @@ class Participant: NSObject{
             return
         }
         let currentTime = NSDate()
-        let newSpeed = 10.0 //TODO simplest case - constant speed. Replace with speed generation
+        let newSpeed = generateSpeed()
         
         let lastBoostInterval = currentTime.timeIntervalSinceDate(lastBoostTime!)
         let lastBoostDistance =  lastBoostInterval * lastBoostSpeed
