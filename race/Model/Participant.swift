@@ -9,11 +9,11 @@
 import Foundation
 
 class Participant: NSObject{
+    
     private struct Constants{
         static let BoostFrequency = 50.0 //times per second
     }
     
-    private var timer: NSTimer!
     private func updateInterval() -> NSTimeInterval{
         return 1.0 / Constants.BoostFrequency;
     }
@@ -67,11 +67,32 @@ class Participant: NSObject{
         }
     }
     
+    private var worker: NSThread!
+    
+    private var _participantNumber = 0
+    private var participantNumber: Int {
+        get {
+            return getWith(_participantNumber, closure: {return self._participantNumber})
+        }
+        set {
+            setWith(_participantNumber, closure: {self._participantNumber = newValue})
+        }
+    }
+    
     //***
     //Interface
     //***
     //Should be set from RaceController on "photo-finish")
-    var finishTime: NSDate! //TODO atomic
+    private let _finishTimeLock = "_finishTimeLock"
+    private var _finishTime: NSDate!
+    var finishTime: NSDate!{
+        get {
+            return getWith(_finishTimeLock, closure: {return self._finishTime})
+        }
+        set {
+            setWith(_finishTimeLock, closure: {self._finishTime = newValue})
+        }
+    }
     
     func distanceForTime(time: NSDate) -> Double{
         if lastBoostTime == nil {
@@ -98,7 +119,7 @@ class Participant: NSObject{
         }
         if finishTime != nil {
             print("Great! On finish!");
-            timer.invalidate()
+            worker.cancel()
             return
         }
         let currentTime = NSDate()
@@ -108,6 +129,7 @@ class Participant: NSObject{
         let lastBoostDistance =  lastBoostInterval * lastBoostSpeed
         
         distanceTillLastBoost += lastBoostDistance
+        lastBoostTime = NSDate()
         lastBoostSpeed = newSpeed
         
         //        print("lastBoostInterval = \(lastBoostInterval), currentTime= \(currentTime)")
@@ -116,15 +138,18 @@ class Participant: NSObject{
     }
     
     func moving(){
-        while true {
+        while !worker.cancelled {
             boost()
             NSThread.sleepForTimeInterval(updateInterval())
         }
     }
     
-    func start(startTime: NSDate){
+    func start(startTime: NSDate, yourNumber: Int){
         lastBoostTime = startTime
-        NSThread.detachNewThreadSelector("moving", toTarget: self, withObject: nil)
+        worker = NSThread(target: self, selector: "moving", object: nil)
+        worker.threadPriority = Double(yourNumber)/10.0
+        participantNumber = yourNumber
+        worker.start()
     }
     
 }

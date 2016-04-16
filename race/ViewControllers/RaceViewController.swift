@@ -32,6 +32,7 @@ class RaceViewController: UIViewController, RaceDataSource {
         navigationController?.navigationBarHidden = true
     }
     
+    private var timer: NSTimer!
     @IBAction func startRace(sender: UIButton) {
         //Re-init model
         raceModel = Race(raceDistance: Configuration.RaceDistance,
@@ -41,14 +42,22 @@ class RaceViewController: UIViewController, RaceDataSource {
         
         raceModel.start()
         
-        NSTimer.scheduledTimerWithTimeInterval(updateInterval(), target: self,
+        timer = NSTimer.scheduledTimerWithTimeInterval(updateInterval(), target: self,
             selector: "updateRaceView", userInfo:nil, repeats: true)
     }
     
     func updateRaceView() {
+        if raceModel.finished {
+            timer.invalidate()
+            return
+        }
         //TODO If race has all participants finishTime filled - show scoreboard
-        
-        raceView.setNeedsDisplay()
+        if raceModel.participantsFinishCount == Configuration.ParticipantsCount{
+            raceModel.finished = true
+            raceModel.printFinish()
+        } else {
+            raceView.setNeedsDisplay()
+        }
     }
     
     //RaceDataSource
