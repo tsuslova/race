@@ -9,14 +9,17 @@
 import UIKit
 
 class RaceViewController: UIViewController, RaceDataSource {
-    private struct Constants{
+    private struct Configuration{
         static let ParticipantsCount = 10
-        static let UpdateFrequency = 0.5 //times per second
+        static let UpdateFrequency = 0.001 //times per second
+        static let RaceDistance = 1000.0 //meters
     }
     
     private func updateInterval() -> NSTimeInterval{
-        return 1.0 / Constants.UpdateFrequency;
+        return 1.0 / Configuration.UpdateFrequency;
     }
+    
+    private var raceModel: Race!
     
     @IBOutlet weak var raceView: RaceView!{
         didSet{
@@ -27,18 +30,24 @@ class RaceViewController: UIViewController, RaceDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBarHidden = true
-        raceView.setupRace(Constants.ParticipantsCount)
     }
     
     @IBAction func startRace(sender: UIButton) {
         //Re-init model
-        raceView.setupRace(Constants.ParticipantsCount)
+        raceModel = Race(raceDistance: Configuration.RaceDistance,
+            participantsCount: Configuration.ParticipantsCount)
+        
+        raceView.setupRace(Configuration.ParticipantsCount)
+        
+        raceModel.start()
+        
         NSTimer.scheduledTimerWithTimeInterval(updateInterval(), target: self,
             selector: "updateRaceView", userInfo:nil, repeats: true)
     }
     
     func updateRaceView() {
-        //TODO If race have all participants finishTime filled - show scoreboard
+        //TODO If race has all participants finishTime filled - show scoreboard
+        
         raceView.setNeedsDisplay()
     }
     
@@ -56,4 +65,3 @@ class RaceViewController: UIViewController, RaceDataSource {
         return 1.0
     }
 }
-
