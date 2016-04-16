@@ -20,6 +20,13 @@ class RaceView: UIView {
     weak var dataSource: RaceDataSource?
     
     func setupRace(participantsCount: Int) {
+        //Re-init
+        if subviews.count > 0{
+            for view in subviews {
+                view.removeFromSuperview()
+            }
+        }
+        
         let participantViewHeight = frame.size.height / CGFloat(participantsCount)
         var y = CGFloat(0.0)
         for i in 1...participantsCount {

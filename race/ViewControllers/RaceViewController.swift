@@ -31,17 +31,24 @@ class RaceViewController: UIViewController, RaceDataSource {
     }
     
     @IBAction func startRace(sender: UIButton) {
+        //Re-init model
+        raceView.setupRace(Constants.ParticipantsCount)
         NSTimer.scheduledTimerWithTimeInterval(updateInterval(), target: self,
             selector: "updateRaceView", userInfo:nil, repeats: true)
     }
     
     func updateRaceView() {
+        //TODO If race have all participants finishTime filled - show scoreboard
+        raceView.setNeedsDisplay()
     }
     
     //RaceDataSource
     func distanceFractionForParticipantAtIndex(index:Int) -> Double?{
         //TODO ask Model
-        return 0.5
+        //TODO after reaching 1 set participant finishTime: assume that we have "photo finish"
+        //participant finishes the race only when it becomes visible on screen
+        
+        return 0.0
     }
     
     func speedForParticipantAtIndex(index:Int) -> Double?{
@@ -49,3 +56,4 @@ class RaceViewController: UIViewController, RaceDataSource {
         return 1.0
     }
 }
+
