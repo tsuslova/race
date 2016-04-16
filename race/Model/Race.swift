@@ -37,7 +37,7 @@ class Race {
     
     func distanceForParticipantAtIndex(index: Int) -> Double{
         let participant = participants[index]
-        //TODO thick whether time synchronization should be in controller...
+        //TODO think whether time synchronization should be in controller...
         return participant.distanceForTime(NSDate())
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class RaceViewController: UIViewController, RaceDataSource {
     private struct Configuration{
         static let ParticipantsCount = 10
-        static let UpdateFrequency = 0.001 //times per second
+        static let UpdateFrequency = 50.0 //times per second
         static let RaceDistance = 1000.0 //meters
     }
     
@@ -54,10 +54,12 @@ class RaceViewController: UIViewController, RaceDataSource {
     //RaceDataSource
     func distanceFractionForParticipantAtIndex(index:Int) -> Double?{
         //TODO ask Model
-        //TODO after reaching 1 set participant finishTime: assume that we have "photo finish"
+        let participantDistance = raceModel.distanceForParticipantAtIndex(index)
+        
+        //TODO after reaching 1 set participant finishTime: assume that we have "photo finish":
         //participant finishes the race only when it becomes visible on screen
         
-        return 0.0
+        return participantDistance / Configuration.RaceDistance
     }
     
     func speedForParticipantAtIndex(index:Int) -> Double?{
