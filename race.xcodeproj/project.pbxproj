@@ -14,6 +14,8 @@
 		990CE7AE1CC26A7200A32721 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 990CE7A51CC26A7200A32721 /* LaunchScreen.storyboard */; };
 		990CE7AF1CC26A7200A32721 /* RaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7A71CC26A7200A32721 /* RaceViewController.swift */; };
 		990CE7B01CC26A7200A32721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 990CE7A91CC26A7200A32721 /* Main.storyboard */; };
+		990CE7B21CC26BEA00A32721 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7B11CC26BEA00A32721 /* Participant.swift */; };
+		990CE7B41CC26CAE00A32721 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7B31CC26CAE00A32721 /* ParticipantView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		990CE7A51CC26A7200A32721 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		990CE7A71CC26A7200A32721 /* RaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaceViewController.swift; sourceTree = "<group>"; };
 		990CE7A91CC26A7200A32721 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		990CE7B11CC26BEA00A32721 /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
+		990CE7B31CC26CAE00A32721 /* ParticipantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				990CE79F1CC26A7200A32721 /* Model */,
-				990CE7A11CC26A7200A32721 /* SupportingFiles */,
 				990CE7A61CC26A7200A32721 /* ViewControllers */,
 				990CE7A81CC26A7200A32721 /* Views */,
+				990CE7A11CC26A7200A32721 /* SupportingFiles */,
 			);
 			path = race;
 			sourceTree = "<group>";
@@ -69,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				990CE7A01CC26A7200A32721 /* Race.swift */,
+				990CE7B11CC26BEA00A32721 /* Participant.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -96,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				990CE7A91CC26A7200A32721 /* Main.storyboard */,
+				990CE7B31CC26CAE00A32721 /* ParticipantView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -175,6 +181,8 @@
 				990CE7AB1CC26A7200A32721 /* AppDelegate.swift in Sources */,
 				990CE7AA1CC26A7200A32721 /* Race.swift in Sources */,
 				990CE7AF1CC26A7200A32721 /* RaceViewController.swift in Sources */,
+				990CE7B21CC26BEA00A32721 /* Participant.swift in Sources */,
+				990CE7B41CC26CAE00A32721 /* ParticipantView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
