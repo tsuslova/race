@@ -32,6 +32,10 @@ class Participant {
         return lastBoostDistance?.distanceMeters ?? 0.0
     }
     
+    func lastKnownSpeed() -> Double{
+        return lastBoostSpeed
+    }
+    
     func boost(){
         //TODO:
         // - store current time

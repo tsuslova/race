@@ -9,14 +9,8 @@
 import Foundation
 import UIKit
 
-
-protocol ParticipantViewDataSource: class {
-    func coordinateForParticipantView(sender:ParticipantView) -> CGPoint?
-}
-
-@IBDesignable
-class ParticipantView: UIView {
+//TODO: replace it by UIView with point and speed label?
+class ParticipantView: UILabel {
     
-    weak var dataSource: ParticipantViewDataSource?
     
 }

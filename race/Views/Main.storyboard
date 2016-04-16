@@ -59,6 +59,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="ajr-ye-9fx"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="raceView" destination="TO8-NX-G7M" id="iJP-SV-myT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TK9-Ik-xQa" sceneMemberID="firstResponder"/>
             </objects>
