@@ -7,3 +7,16 @@
 //
 
 import Foundation
+import UIKit
+
+
+protocol ParticipantViewDataSource: class {
+    func coordinateForParticipantView(sender:ParticipantView) -> CGPoint?
+}
+
+@IBDesignable
+class ParticipantView: UIView {
+    
+    weak var dataSource: ParticipantViewDataSource?
+    
+}

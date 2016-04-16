@@ -16,6 +16,7 @@
 		990CE7B01CC26A7200A32721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 990CE7A91CC26A7200A32721 /* Main.storyboard */; };
 		990CE7B21CC26BEA00A32721 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7B11CC26BEA00A32721 /* Participant.swift */; };
 		990CE7B41CC26CAE00A32721 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7B31CC26CAE00A32721 /* ParticipantView.swift */; };
+		990CE7B61CC26DD700A32721 /* RaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990CE7B51CC26DD700A32721 /* RaceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		990CE7A91CC26A7200A32721 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		990CE7B11CC26BEA00A32721 /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
 		990CE7B31CC26CAE00A32721 /* ParticipantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
+		990CE7B51CC26DD700A32721 /* RaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			children = (
 				990CE7A91CC26A7200A32721 /* Main.storyboard */,
 				990CE7B31CC26CAE00A32721 /* ParticipantView.swift */,
+				990CE7B51CC26DD700A32721 /* RaceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				990CE7AB1CC26A7200A32721 /* AppDelegate.swift in Sources */,
+				990CE7B61CC26DD700A32721 /* RaceView.swift in Sources */,
 				990CE7AA1CC26A7200A32721 /* Race.swift in Sources */,
 				990CE7AF1CC26A7200A32721 /* RaceViewController.swift in Sources */,
 				990CE7B21CC26BEA00A32721 /* Participant.swift in Sources */,

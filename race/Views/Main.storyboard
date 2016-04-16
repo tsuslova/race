@@ -24,7 +24,7 @@
         <!--Race View Controller-->
         <scene sceneID="AUl-RQ-QuK">
             <objects>
-                <viewController id="tUl-XR-ceS" customClass="RaceViewController" customModule="Race" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tUl-XR-ceS" customClass="RaceViewController" customModule="race" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AJg-7y-50Y"/>
                         <viewControllerLayoutGuide type="bottom" id="yfB-Hm-mD8"/>
@@ -41,7 +41,7 @@
                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Start race!"/>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TO8-NX-G7M">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TO8-NX-G7M" customClass="RaceView" customModule="race" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="66" width="600" height="534"/>
                                 <color key="backgroundColor" red="0.25098040700000002" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>

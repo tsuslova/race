@@ -7,3 +7,19 @@
 //
 
 import Foundation
+
+class Race {
+    
+    private var distance: Double!
+    private var startTime: NSDate! //init it with start time at race start!
+    private var participants = Array<Participant>()
+    
+    //***
+    //Interface
+    //***
+    
+    func start(raceDistance: Double){
+        //TODO:
+        // - tell all participants to start
+    }
+}
