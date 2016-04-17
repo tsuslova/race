@@ -46,6 +46,19 @@ class Participant: NSObject{
         worker.start()
     }
     
+    var participantNumber: Int {
+        get {
+            return getWith(_participantNumber, closure: {return self._participantNumber}) ?? 0
+        }
+        set {
+            setWith(_participantNumber, closure: {self._participantNumber = newValue})
+        }
+    }
+    
+    func cancel(){
+        worker.cancel()
+    }
+    
     //***
     //Implementation
     //***
@@ -63,8 +76,8 @@ class Participant: NSObject{
         return 1.0 / Constants.BoostFrequency;
     }
     
-    private func getWith<T>(lock: AnyObject, closure: () -> T) -> T {
-        var value: T
+    private func getWith<T>(lock: AnyObject, closure: () -> T?) -> T? {
+        var value: T?
         objc_sync_enter(lock)
         value = closure()
         objc_sync_exit(lock)
@@ -83,7 +96,7 @@ class Participant: NSObject{
     private var _lastBoostSpeed = Constants.InitialSpeed
     private var lastBoostSpeed: Double {
         get {
-            return getWith(_lastBoostSpeed, closure: {return self._lastBoostSpeed})
+            return getWith(_lastBoostSpeed, closure: {return self._lastBoostSpeed}) ?? 0.0
         }
         set {
             setWith(_lastBoostSpeed, closure: {self._lastBoostSpeed = newValue})
@@ -93,7 +106,7 @@ class Participant: NSObject{
     private var _distanceTillLastBoost = 0.0
     private var distanceTillLastBoost: Double {
         get {
-            return getWith(_distanceTillLastBoost, closure: {return self._distanceTillLastBoost})
+            return getWith(_distanceTillLastBoost, closure: {return self._distanceTillLastBoost}) ?? 0.0
         }
         set {
             setWith(_distanceTillLastBoost, closure: {self._distanceTillLastBoost = newValue})
@@ -114,14 +127,6 @@ class Participant: NSObject{
     private var worker: NSThread!
     
     private var _participantNumber = 0
-    private var participantNumber: Int {
-        get {
-            return getWith(_participantNumber, closure: {return self._participantNumber})
-        }
-        set {
-            setWith(_participantNumber, closure: {self._participantNumber = newValue})
-        }
-    }
     
     private let _finishTimeLock = "_finishTimeLock"
     private var _finishTime: NSDate!

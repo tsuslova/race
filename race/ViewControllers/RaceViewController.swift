@@ -9,6 +9,22 @@
 import UIKit
 
 class RaceViewController: UIViewController, RaceDataSource {
+    
+    //RaceDataSource
+    func distanceFractionForParticipantAtIndex(index:Int) -> Double?{
+        let participantDistance = raceModel.distanceForParticipantAtIndex(index)
+        return participantDistance / Configuration.RaceDistance
+    }
+    
+    func speedForParticipantAtIndex(index:Int) -> String?{
+        if raceModel.isFinishedAtIndex(index){
+            return "Finished!"
+        }
+        let participantSpeed = raceModel.speedForParticipantAtIndex(index)
+        let speedString = NSNumberFormatter().stringFromNumber(participantSpeed ?? 0.0)!+"m/s"
+        return speedString
+    }
+    
     private struct Configuration{
         static let ParticipantsCount = 10
         static let UpdateFrequency = 50.0 //times per second
@@ -27,13 +43,22 @@ class RaceViewController: UIViewController, RaceDataSource {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationController?.navigationBarHidden = true
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBarHidden = false
     }
     
     private var timer: NSTimer!
+    
     @IBAction func startRace(sender: UIButton) {
+        timer?.invalidate()
+        
         //Re-init model
         raceModel = Race(raceDistance: Configuration.RaceDistance,
             participantsCount: Configuration.ParticipantsCount)
@@ -49,29 +74,20 @@ class RaceViewController: UIViewController, RaceDataSource {
     func updateRaceView() {
         if raceModel.raceFinished {
             timer.invalidate()
+            performSegueWithIdentifier("scoreboardSegue", sender: self)
             return
         }
-        //TODO If race has all participants finishTime filled - show scoreboard
         if raceModel.participantsFinishCount == Configuration.ParticipantsCount{
             raceModel.raceFinished = true
-            raceModel.printFinish()
         }
         raceView.setNeedsDisplay()
         
     }
     
-    //RaceDataSource
-    func distanceFractionForParticipantAtIndex(index:Int) -> Double?{
-        let participantDistance = raceModel.distanceForParticipantAtIndex(index)
-        return participantDistance / Configuration.RaceDistance
-    }
-    
-    func speedForParticipantAtIndex(index:Int) -> String?{
-        if raceModel.isFinishedAtIndex(index){
-            return "Finished!"
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let scoreboardVC = segue.destinationViewController as? ScoreboardViewController{
+            scoreboardVC.resultsList = raceModel.results()
         }
-        let participantSpeed = raceModel.speedForParticipantAtIndex(index)
-        let speedString = NSNumberFormatter().stringFromNumber(participantSpeed ?? 0.0)!+"m/s"
-        return speedString
     }
+
 }

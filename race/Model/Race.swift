@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct RaceResult{
+    var name: String
+    var resultTime: Double
+}
+
 class Race {    
     private var distance: Double
     private var startTime: NSDate! //init it with start time at race start!
@@ -68,11 +73,24 @@ class Race {
         return participant.finishTime != nil
     }
     
-    func printFinish() {
-        var index = 1
+    func results() -> Array<RaceResult>{
+        var results = Array<RaceResult>()
         for participant in participants{
-            print("\(index) finished at \(participant.finishTime)")
-            index++
+            let name = "Participant \(participant.participantNumber)"
+            let time = participant.finishTime.timeIntervalSinceDate(startTime)
+            results.append(RaceResult(name: name, resultTime: time))
+            
+        }
+        return results.sort{ (raceResult1, raceResult2) -> Bool in
+            raceResult1.resultTime < raceResult2.resultTime
+        }
+    }
+    
+    deinit{
+        if !raceFinished{
+            for participant in participants{
+                participant.cancel()
+            }
         }
     }
 }
