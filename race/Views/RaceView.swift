@@ -30,12 +30,26 @@ class RaceView: UIView {
         let participantViewHeight = frame.size.height / CGFloat(participantsCount)
         var y = CGFloat(0.0)
         for i in 1...participantsCount {
-            let participantView = ParticipantView(frame: CGRectMake(0, y, 100, 20))
+            let participantView = ParticipantView(frame: CGRectMake(0, y,
+                ParticipantView.prefferedWidth(), participantViewHeight))
             y += participantViewHeight
             participantView.text = dataSource?.speedForParticipantAtIndex(i-1)
             addSubview(participantView)
         }
         
+    }
+    
+    func raceWidth() -> CGFloat {
+        return frame.size.width - ParticipantView.prefferedWidth()
+    }
+    
+    func finishLine() -> UIBezierPath{
+        let path = UIBezierPath()
+        let x = raceWidth()
+        path.moveToPoint(CGPoint(x: x, y: 0))
+        path.addLineToPoint(CGPoint(x:x, y:frame.size.height))
+        path.lineWidth = 1
+        return path
     }
     
     override func drawRect(rect: CGRect) {
@@ -45,16 +59,14 @@ class RaceView: UIView {
                 participantView.text = dataSource?.speedForParticipantAtIndex(index)
             }
             let distanceFraction = dataSource?.distanceFractionForParticipantAtIndex(index) ?? 0.0
-            var x = frame.size.width * CGFloat(distanceFraction)
-            if x < 0{
+            var x = raceWidth() * CGFloat(distanceFraction)
+            if x < 0 {
                 x = 0
-            }
-            if x > frame.size.width - view.frame.size.width{
-                x  = frame.size.width - view.frame.size.width
             }
             view.frame.origin.x = x
             index++
         }
+        finishLine().stroke()
     }
     
 }

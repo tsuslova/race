@@ -8,23 +8,22 @@
 
 import Foundation
 
-class Race {
-    
+class Race {    
     private var distance: Double
     private var startTime: NSDate! //init it with start time at race start!
     private var participants: Array<Participant>
-    
-    func setFinishedParticipantAtIndex(index: Int) {
-        let participant = participants[index]
-        participant.finishTime = NSDate()
-        participantsFinishCount++
-    }
     
     //***
     //Interface
     //***
     var participantsFinishCount = 0
     var raceFinished = true
+    
+    func setFinishedParticipantAtIndex(index: Int) {
+        let participant = participants[index]
+        participant.finishTime = NSDate()
+        participantsFinishCount++
+    }
     
     func start(){
         startTime = NSDate()

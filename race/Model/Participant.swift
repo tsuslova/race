@@ -10,6 +10,46 @@ import Foundation
 
 class Participant: NSObject{
     
+    //***
+    //Interface
+    //***
+    //Should be set from RaceController on "photo-finish")
+    var finishTime: NSDate!{
+        get {
+            return getWith(_finishTimeLock, closure: {return self._finishTime})
+        }
+        set {
+            setWith(_finishTimeLock, closure: {self._finishTime = newValue})
+        }
+    }
+    
+    func distanceForTime(time: NSDate) -> Double{
+        if lastBoostTime == nil {
+            print("Debug log: not in race yet...");
+            return 0.0
+        }
+        
+        let currentTime = NSDate()
+        let lastBoostInterval = currentTime.timeIntervalSinceDate(lastBoostTime!)
+        return distanceTillLastBoost+lastBoostInterval*lastBoostSpeed
+    }
+    
+    func lastKnownSpeed() -> Double{
+        return lastBoostSpeed
+    }
+    
+    func start(startTime: NSDate, yourNumber: Int){
+        lastBoostTime = startTime
+        worker = NSThread(target: self, selector: "moving", object: nil)
+        worker.threadPriority = Double(yourNumber)/10.0
+        participantNumber = yourNumber
+        worker.start()
+    }
+    
+    //***
+    //Implementation
+    //***
+    
     private struct Constants{
         static let BoostFrequency = 50.0 //times per second
         
@@ -23,7 +63,7 @@ class Participant: NSObject{
         return 1.0 / Constants.BoostFrequency;
     }
     
-    func getWith<T>(lock: AnyObject, closure: () -> T) -> T {
+    private func getWith<T>(lock: AnyObject, closure: () -> T) -> T {
         var value: T
         objc_sync_enter(lock)
         value = closure()
@@ -31,7 +71,7 @@ class Participant: NSObject{
         return value
     }
     
-    func setWith(lock: AnyObject, closure: () -> Void) {
+    private func setWith(lock: AnyObject, closure: () -> Void) {
         objc_sync_enter(lock)
         closure()
         objc_sync_exit(lock)
@@ -83,37 +123,10 @@ class Participant: NSObject{
         }
     }
     
-    //***
-    //Interface
-    //***
-    //Should be set from RaceController on "photo-finish")
     private let _finishTimeLock = "_finishTimeLock"
     private var _finishTime: NSDate!
-    var finishTime: NSDate!{
-        get {
-            return getWith(_finishTimeLock, closure: {return self._finishTime})
-        }
-        set {
-            setWith(_finishTimeLock, closure: {self._finishTime = newValue})
-        }
-    }
     
-    func distanceForTime(time: NSDate) -> Double{
-        if lastBoostTime == nil {
-            print("Debug log: not in race yet...");
-            return 0.0
-        }
-        
-        let currentTime = NSDate()
-        let lastBoostInterval = currentTime.timeIntervalSinceDate(lastBoostTime!)
-        return distanceTillLastBoost+lastBoostInterval*lastBoostSpeed
-    }
-    
-    func lastKnownSpeed() -> Double{
-        return lastBoostSpeed
-    }
-    
-    func generateSpeed() -> Double!{
+    private func generateSpeed() -> Double!{
         let speedMultiplier = drand48() + 0.55
         
         var newSpeed = lastBoostSpeed*(speedMultiplier)
@@ -125,7 +138,7 @@ class Participant: NSObject{
         return newSpeed
     }
     
-    func boost(){
+    private func boost(){
         if lastBoostTime == nil {
             print("Debug log: not in race yet...");
             return
@@ -155,14 +168,6 @@ class Participant: NSObject{
             boost()
             NSThread.sleepForTimeInterval(updateInterval())
         }
-    }
-    
-    func start(startTime: NSDate, yourNumber: Int){
-        lastBoostTime = startTime
-        worker = NSThread(target: self, selector: "moving", object: nil)
-        worker.threadPriority = Double(yourNumber)/10.0
-        participantNumber = yourNumber
-        worker.start()
     }
     
 }
