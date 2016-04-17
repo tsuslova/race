@@ -28,7 +28,7 @@ class RaceViewController: UIViewController, RaceDataSource {
     private struct Configuration{
         static let ParticipantsCount = 10
         static let UpdateFrequency = 50.0 //times per second
-        static let RaceDistance = 100.0 //meters
+        static let RaceDistance = 1000.0 //meters
     }
     
     private func updateInterval() -> NSTimeInterval{

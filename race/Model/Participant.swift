@@ -76,7 +76,7 @@ class Participant: NSObject{
         return 1.0 / Constants.BoostFrequency;
     }
     
-    private func getWith<T>(lock: AnyObject, closure: () -> T?) -> T? {
+    private func getWith<T>(lock: AnyObject?, closure: () -> T?) -> T? {
         var value: T?
         objc_sync_enter(lock)
         value = closure()
@@ -84,7 +84,7 @@ class Participant: NSObject{
         return value
     }
     
-    private func setWith(lock: AnyObject, closure: () -> Void) {
+    private func setWith(lock: AnyObject?, closure: () -> Void) {
         objc_sync_enter(lock)
         closure()
         objc_sync_exit(lock)
@@ -115,12 +115,17 @@ class Participant: NSObject{
     
     //init it with start time at race start!
     private var _lastBoostTime = NSDate()
+    private let _lastBoostTimeQueue = dispatch_queue_create("com.test.LockQueue", nil)
     private var lastBoostTime: NSDate!  {
         get {
-            return getWith(_lastBoostTime, closure: {return self._lastBoostTime})
+            var time = NSDate()
+            dispatch_sync(_lastBoostTimeQueue) {
+                time = self._lastBoostTime
+            }
+            return time
         }
         set {
-            setWith(_lastBoostTime, closure: {self._lastBoostTime = newValue})
+            dispatch_sync(_lastBoostTimeQueue) {self._lastBoostTime = newValue}
         }
     }
     
@@ -149,7 +154,7 @@ class Participant: NSObject{
             return
         }
         if finishTime != nil {
-            print("Great! On finish!");
+            //print("Great! On finish!");
             worker.cancel()
             return
         }

@@ -45,7 +45,7 @@ class ScoreboardViewController: UITableViewController {
             let result = resultsList[indexPath.row]
             scoreCell.lblIndex.text = "\(indexPath.row+1)."
             scoreCell.lblName.text = result.name
-            scoreCell.lblTime.text = "\(result.resultTime)"
+            scoreCell.lblTime.text = String(format: "%.3fs", result.resultTime)
         }
 
         return cell
