@@ -125,7 +125,7 @@ class Participant: NSObject{
             return time
         }
         set {
-            dispatch_sync(_lastBoostTimeQueue) {self._lastBoostTime = newValue}
+            dispatch_barrier_async(_lastBoostTimeQueue) {self._lastBoostTime = newValue}
         }
     }
     
